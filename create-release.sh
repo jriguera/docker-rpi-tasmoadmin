@@ -155,9 +155,27 @@ $CHANGELOG
 
 ## Using it
 
-Given the docker image with name `mosquitto`:
+```
+# Http Basic Auth
+TASMOADMIN_AUTH_USER
+TASMOADMIN_AUTH_PASS
+# TasmoAdmin user
+TASMOADMIN_USER
+TASMOADMIN_PASS
+# Enable or disable login
+TASMOADMIN_LOGIN=0
+```
 
-    docker run --name mqtt -p 1883:1883 -v $(pwd)/datadir:/mqtt -e MQTT_PERSISTENCE=false -e MQTT_USER=micasa -e MQTT_PASSWORD=home -d jriguera/mosquitto
+To enable TLS (https), just generate the certificate and key in `certs/tasmoadmin.crt`
+and `certs/tasmoadmin.key` inside the data folder. You can redefine the environment
+variables `TASMOADMIN_TLS_CRT` and `TASMOADMIN_TLS_KEY` to point to a different files.
+
+
+And use them:
+
+```
+docker run --name tasmoad -p 8080:80 -v $(pwd)/datadir:/data -e TASMOADMIN_LOGIN=0 -d jriguera/tasmoadmin
+```
 
 EOF
 )
