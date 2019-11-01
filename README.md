@@ -15,7 +15,7 @@ docker build . -t tasmoadmin
 ### Create final release and publish to Docker Hub
 
 ```
-create-release.sh
+create-publish-release.sh
 ```
 
 
