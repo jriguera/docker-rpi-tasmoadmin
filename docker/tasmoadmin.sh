@@ -35,14 +35,14 @@ fi
 echo "* Using env variables to generate webserver configuration ..."
 if [ -r "${TASMOADMIN_TLS_CRT}" ] &&  [ -r "${TASMOADMIN_TLS_KEY}" ]
 then
-	cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.server"
+    cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.server"
 	listen ${TASMOADMIN_PORT} ssl http2 default_server;
 	ssl_certificate ${TASMOADMIN_TLS_CRT};
 	ssl_certificate_key ${TASMOADMIN_TLS_KEY};
 	ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
 	EOF
 else
-	cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.server"
+    cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.server"
 	listen ${TASMOADMIN_PORT} default_server;
 	EOF
 fi
@@ -62,7 +62,7 @@ fi
 
 if [ -r "/etc/nginx/auth" ]
 then
-	cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.auth"
+    cat <<- EOF > "/etc/nginx/conf.d/tasmoadmin.auth"
 	auth_basic "TasmoAdmin Auth Required";
 	auth_basic_user_file /etc/nginx/auth;
 	EOF
@@ -102,7 +102,7 @@ then
 	    "minimize_resources": "1"
 	}
 	EOF
-	chown nginx:nginx "${TASMOADMIN_CONFIGFILE}"
+    chown nginx:nginx "${TASMOADMIN_CONFIGFILE}"
 else
     sed -i "s/\"username\":.*\"\(.*\)\"/\"username\": \"$TASMOADMIN_USER\"/g" "${TASMOADMIN_CONFIGFILE}"
     sed -i "s/\"login\":.*\"\(.*\)\"/\"login\": \"$TASMOADMIN_LOGIN\"/g" "${TASMOADMIN_CONFIGFILE}"
