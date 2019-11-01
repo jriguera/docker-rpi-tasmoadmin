@@ -1,12 +1,12 @@
 # TasmoAdmin Docker
 
 # docker build . -t tasmoadmin
-# docker run --name tasmoadmin -v $(pwd)/tasmoadmin:/data  tasmoadmin
+# docker run --name tasmoadmin -e TASMOADMIN_LOGIN=0 -p 8080:80  -v $(pwd)/tasmoadmin:/data  tasmoadmin
 
 ARG ARCH=arm32v6
 FROM "${ARCH}/alpine:3.10" AS nginx
 
-ARG VERSION=1.6.0
+ARG VERSION=1.6.1
 ARG MYVERSION=jose0
 ARG TASMOADMIN_PKG_URL=https://github.com/reloxx13/TasmoAdmin/releases/download/v${VERSION}/tasmoadmin_v${VERSION}.tar.gz
 ARG DATADIR=/data
