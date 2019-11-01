@@ -164,9 +164,9 @@ $CHANGELOG
     # Enable or disable login
     TASMOADMIN_LOGIN=0
 
-To enable TLS (https), just generate the certificate and key in `certs/tasmoadmin.crt`
-and `certs/tasmoadmin.key` inside the data folder. You can redefine the environment
-variables `TASMOADMIN_TLS_CRT` and `TASMOADMIN_TLS_KEY` to point to a different files.
+To enable TLS (https), just generate the certificate and key in "certs/tasmoadmin.crt"
+and "certs/tasmoadmin.key" inside the data folder. You can redefine the environment
+variables "TASMOADMIN_TLS_CRT" and "TASMOADMIN_TLS_KEY" to point to a different files.
 
 And use them:
 
