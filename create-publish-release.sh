@@ -13,8 +13,8 @@ GITHUB_REPO="jriguera/docker-rpi-tasmoadmin"
 
 ###
 
-DOCKER=docker
-JQ=jq
+DOCKER="docker"
+JQ="jq"
 CURL="curl -s"
 RE_VERSION_NUMBER='^[0-9]+([0-9\.]*[0-9]+)*$'
 
@@ -85,7 +85,7 @@ then
     exit 1
 fi
 
-DOCKER_USER=$(docker info 2> /dev/null  | sed -ne 's/^Username: \(.*\)/\1/p')
+DOCKER_USER=$(docker info 2> /dev/null  | sed -ne 's/Username: \(.*\)/\1/p')
 if [ -z "$DOCKER_USER" ]
 then
     echo "ERROR: Not logged in Docker Hub!"
@@ -179,14 +179,21 @@ docker run --name tasmoad -p 8080:80 -v $(pwd)/datadir:/data -e TASMOADMIN_LOGIN
 
 EOF
 )
-printf -v DATA '{"tag_name": "v%s","target_commitish": "master","name": "v%s","body": %s,"draft": false, "prerelease": false}' "$VERSION" "$VERSION" "$(echo "$DESC" | $JQ -R -s '@text')"
-$CURL -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -XPOST --data "$DATA" "https://api.github.com/repos/$GITHUB_REPO/releases" > /dev/null
-
-git fetch --tags
+printf -v data '{"tag_name": "v%s","target_commitish": "master","name": "v%s","body": %s,"draft": false, "prerelease": false}' "$VERSION" "$VERSION" "$(echo "$DESC" | $JQ -R -s '@text')"
+releaseid=$($CURL -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -XPOST --data "$data" "https://api.github.com/repos/$GITHUB_REPO/releases" | $JQ '.id')
+# Upload the release
+echo "* Uploading image to Github releases section ... "
+echo -n "  URL: "
+$CURL -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/octet-stream" --data-binary @"/tmp/$NAME-$VERSION.tgz" "https://uploads.github.com/repos/$GITHUB_REPO/releases/$releaseid/assets?name=$NAME-$VERSION.tgz" | $JQ -r '.browser_download_url'
 
 echo
 echo "*** Description https://github.com/$GITHUB_REPO/releases/tag/v$VERSION: "
 echo
 echo "$DESC"
 
+# Delete the release
+rm -f "/tmp/$NAME-$VERSION.tgz"
+git fetch --tags
+
 exit 0
+
