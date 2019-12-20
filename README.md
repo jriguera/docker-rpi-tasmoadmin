@@ -52,6 +52,8 @@ docker run --name tasmo -p 8080:80 -v $(pwd)/datadir:/data -e TASMOADMIN_LOGIN=0
 
 ```
 
+Make sure `$(pwd)/datadir` is created with uid 1000, otherwise docker will create it automatically
+with uid 0 (root) and tasmoadmin will fail complaining about not being able to write files there.
 
 
 # Author
